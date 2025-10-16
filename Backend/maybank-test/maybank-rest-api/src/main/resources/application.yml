@@ -1,0 +1,102 @@
+app:
+  id: ${spring.application.name}
+  auth:
+    tokenSecret: UUtvOYvp9YHz/kQpTYTimW52hefnIW5eh49gnJHZqp4=
+    tokenExpirationMsec: 86400000
+
+server:
+  port: 8100
+  servlet:
+    context-path: /maybank/v1/rest/
+
+spring:
+  timezone: UTC+08:00
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 10MB
+  application:
+    name: maybank-rest-api
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initial-size: 10
+      max-active: 50
+      max-wait: 60000
+      min-idle: 5
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: select '1' from dual
+      validation-query-timeout: 60000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      url: jdbc:mysql://127.0.0.1:3306/maybank-master?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&cachePrepStmts=true&useServerPrepStmts=true&rewriteBatchedStatements=true&serverTimezone=GMT%2B8
+      username: root
+      password: root1234
+      #username: root
+      #password: local-p@ssw
+  jpa:
+    database: mysql
+    database-platform: mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+        jdbc:
+          time_zone: UTC+08:00
+          lob:
+            non_contextual_creation: true
+          batch_size: 30
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: always
+  redis:
+    ssl: false
+    password:
+    jedis:
+      pool:
+        max-active: 32
+        max-idle: 16
+        min-idle: 8
+        max-wait: 1500
+    database: 0
+    timeout: 3000
+    host: 127.0.0.1
+    port: 36379
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+internationalization:
+  enable: true
+  supported-locales: en_US,zh_CN,th_TH,vi_VN,ms_MY
+  default-locale: en_US
+rate:
+  limit:
+    client:
+      basic: basic123
+      free: free123
+
+csv:
+  source:
+    directory: C:/Users/kpc_0/Desktop/mocktest/txt/
+  backup:
+    directory: C:/Users/kpc_0/Desktop/mocktest/txt/backup/
+  destination:
+    directory: C:/Users/kpc_0/Desktop/mocktest/txt/process/
+  summary:
+    directory: C:/Users/kpc_0/Desktop/mocktest/txt/summary/
+
+aes:
+  secret-key: 8Sw1doXBThPB4G2n38DisSGu79VdWD8g
+
+socket-io:
+  port: 8101
+  host: 0.0.0.0
+

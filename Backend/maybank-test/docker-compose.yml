@@ -1,0 +1,49 @@
+version: '3.8'
+services:
+    redis:
+        image: redis:latest
+        container_name: redis-server
+        networks:
+            - maybank_host_network
+        ports:
+            - "6379:6379"
+        volumes:
+            - redis_data:/data
+    exchange-api:
+        container_name: maybank-rest-api
+        build:
+            context: maybank-rest-api
+            dockerfile: Dockerfile
+        image: maybank-rest-api:latest
+        deploy:
+            resources:
+                limits:
+                    memory: 512m
+                reservations:
+                    memory: 256m
+        ports:
+            - "8100:8100"
+            - "8101:8101"
+        restart: on-failure
+        volumes:
+            - /logs/maybank-rest-api:/logs/maybank-rest-api
+            - /var/ftp/pub/mocktest/txt:/var/ftp/pub/mocktest/txt
+            - /var/ftp/pub/mocktest/txt/backup:/var/ftp/pub/mocktest/txt/backup
+            - /var/ftp/pub/mocktest/txt/process:/var/ftp/pub/mocktest/txt/process
+            - /var/ftp/pub/mocktest/txt/summary:/var/ftp/pub/mocktest/txt/summary
+        logging:
+            driver: json-file
+        healthcheck:
+            test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:8100/maybank/actuator/health" ]
+            interval: 15s
+            retries: 2
+            timeout: 5s
+        networks:
+            - maybank_host_network
+
+networks:
+    maybank_host_network:
+        name: maybank_host_network
+
+volumes:
+    redis_data:
