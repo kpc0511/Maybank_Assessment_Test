@@ -1,0 +1,99 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Promotion Listing
+        </div>
+        <div class="card-body">
+          <div class="alert alert-success" *ngIf="isDeleteSuccessful">
+            {{successDeleteMessage}}
+          </div>
+          <div class="alert alert-warning" *ngIf="isDeleteFailed">
+            Delete promotion failed!<br />{{ errorDeleteMessage }}
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-12"><a routerLink="/special/add-promotion" class="btn btn-sm btn-success mb-2">Add Promotion</a></div>
+            <div class="col-md-12">
+              <div class="input-group">
+                <div class="input-group-prepend" dropdown>
+                  <select id="promotionType" name="promotionType" class="form-control" [(ngModel)]="promotionType">
+                    <option value="ALL">All</option>
+                    <option *ngFor="let item of promotionTypes" [ngValue]="item.id">{{item.name}}</option>
+                  </select>
+                </div>
+                <input type="text" id="input1-group2" name="input1-group2" class="form-control" placeholder="Please Select for Search Type" [(ngModel)]="searchName" />
+                <span class="input-group-prepend">
+                    <button type="button" class="btn btn-primary" (click)="searchPromotion()"><i class="fa fa-search"></i> Search</button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <table class="table table-bordered table-striped table-sm">
+            <thead>
+              <tr>
+                <th class="align-top">Id</th>
+                <th class="align-top">Image</th>
+                <th class="align-top">Title</th>
+                <th class="align-top">Name</th>
+                <th class="align-top">Type</th>
+                <th class="align-top">Status</th>
+                <th class="align-top">Company</th>
+                <th class="align-top">Create Date<br>Update Date</th>
+                <th class="align-top">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let promoData of promotions | paginate : {
+                    itemsPerPage: pageSize,
+                    currentPage: page,
+                    totalItems: count
+                  };
+                  let i = index"
+                  [class.active]="i == currentIndex"
+                  (click)="setActivePromotion(promoData, i)"
+              >
+                <td>{{ promoData.id }}</td>
+                <td><img [src]= "getImage(promoData.image)" alt="" height="80px" /></td>
+                <td>{{ promoData.type === 'PROMOTION_TYPE' ? promoData.promotionTitle : promoData.announcementTitle}}</td>
+                <td>{{ promoData.type === 'PROMOTION_TYPE' ? promoData.promotionName : promoData.announcementName}}</td>
+                <td>{{ promoData.type === 'PROMOTION_TYPE' ? 'Promotion' : 'Announcement'}}</td>
+                <td><span [ngClass]="promoData.status == true ? 'badge badge-success' : 'badge badge-danger'">{{ promoData.status == true ? 'Enable' : 'Disable'}}</span>
+                </td>
+                <td>{{ promoData.company !== null ? promoData.company['companyName'] : "" }}</td>
+                <td>
+                  {{ (promoData.createDate !== null) ? (promoData.createDate | date: 'yyyy-MM-dd HH:mm:ss') : '-'}}<br>
+                  {{ (promoData.updateDate !== null) ? (promoData.updateDate | date: 'yyyy-MM-dd HH:mm:ss') : '-'}}
+                </td>
+                <td>
+                  <a routerLink="/special/edit-promotion/{{promoData.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
+                  <button (click)="deletePromotion(promoData.id)" class="btn btn-sm btn-danger btn-delete-user">
+                    <span>Delete</span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination-controls class="page-item text-center"
+                               previousLabel="Prev"
+                               nextLabel="Next"
+                               [responsive]="true"
+                               (pageChange)="handlePageChange($event)"
+                               screenReaderPageLabel="page"
+                               screenReaderCurrentLabel="You're on page"
+          ></pagination-controls>
+          Items per Page:
+          <select (change)="handlePageSizeChange($event)">
+            <option *ngFor="let size of pageSizes" [ngValue]="size">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

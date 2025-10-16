@@ -1,0 +1,103 @@
+<div class="animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+      <strong *ngIf="isAddMode">Add Gift</strong>
+      <strong *ngIf="!isAddMode">Edit Gift</strong>
+      <small>Form</small>
+    </div>
+    <div class="card-body">
+      <form action="" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+        <div class="alert alert-success" *ngIf="f.submitted && isSuccessful">
+          {{successMessage}}
+        </div>
+        <div class="alert alert-warning" *ngIf="f.submitted && isFailed">
+          Add gift failed!<br />{{ errorMessage }}
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Image</label>
+          <div class="col-md-9">
+            <input id="branchImage" name="branchImage" type="file" fileLimit="1" accept="image/*" class="form-control-file"
+                   multiple="" placeholder="Please Select Image"
+                   (change)="selectFiles($event)">
+            <img *ngFor='let preview of previews' [src]="preview" class="preview">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Title <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Title" autocomplete="title"
+                   name="title" [(ngModel)]="giftModel.title" minlength="3" maxlength="100" #title="ngModel" required>
+            <div class="alert-danger" *ngIf="title.errors && f.submitted">
+              <div *ngIf="title.errors.required">Title is required</div>
+              <div *ngIf="title.errors.minlength">Title must be at least 3 characters</div>
+              <div *ngIf="title.errors.maxlength">Title must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Gift Name <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Gift Name" autocomplete="giftName"
+                   name="giftName" [(ngModel)]="giftModel.giftName" minlength="3" maxlength="100" #giftName="ngModel" required>
+            <div class="alert-danger" *ngIf="giftName.errors && f.submitted">
+              <div *ngIf="giftName.errors.required">Gift Name is required</div>
+              <div *ngIf="giftName.errors.minlength">Gift Name must be at least 3 characters</div>
+              <div *ngIf="giftName.errors.maxlength">Gift Name must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Required Values <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="number" class="form-control" placeholder="Please Enter Required Values" autocomplete="requiredValues"
+                   name="requiredValues" [(ngModel)]="giftModel.requiredValues" minlength="1" maxlength="100" #requiredValues="ngModel" required>
+            <div class="alert-danger" *ngIf="requiredValues.errors && f.submitted">
+              <div *ngIf="requiredValues.errors.required">Required Values is required</div>
+              <div *ngIf="requiredValues.errors.minlength">Required Values must be at least 1 characters</div>
+              <div *ngIf="requiredValues.errors.maxlength">Required Values must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Required Points <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="number" step="1" class="form-control" placeholder="Please Enter Required Points" autocomplete="requiredPoints"
+                   name="requiredPoints" [(ngModel)]="giftModel.requiredPoints" minlength="1" maxlength="100" #requiredPoints="ngModel" pattern="^[0-9]*$" required>
+            <div class="alert-danger" *ngIf="requiredPoints.errors && f.submitted">
+              <div *ngIf="requiredPoints.errors.required">Required Points is required</div>
+              <div *ngIf="requiredPoints.errors.minlength">Required Points must be at least 1 characters</div>
+              <div *ngIf="requiredPoints.errors.maxlength">Required Points must be at most 100 characters</div>
+              <div *ngIf="requiredPoints.errors.pattern">Required Points only allow integer</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Company <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <select id="companyId" name="companyId" class="form-control" [(ngModel)]="giftModel.companyId" #companyId="ngModel" required>
+              <option value="0">Please select</option>
+              <option *ngFor="let companyDetail of dropdownCompanyList" [ngValue]="companyDetail.id">{{companyDetail.companyName}}</option>
+            </select>
+            <div class="alert-danger" *ngIf="companyId.errors && f.submitted">
+              <div *ngIf="companyId.errors.required">Rank Detail is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Submit</button>
+            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Reset</button>
+            <button type="reset" class="btn btn-sm btn-secondary" (click)="back2List()"><i class="fa fa-backward"></i> Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

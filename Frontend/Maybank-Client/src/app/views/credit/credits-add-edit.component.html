@@ -1,0 +1,105 @@
+<div class="animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+      <strong *ngIf="isAddMode">Add Song Credit</strong>
+      <strong *ngIf="!isAddMode">Edit Song Credit</strong>
+      <small>Form</small>
+    </div>
+    <div class="card-body">
+      <form action="" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+        <div class="alert alert-success" *ngIf="f.submitted && isSuccessful">
+          {{successMessage}}
+        </div>
+        <div class="alert alert-warning" *ngIf="f.submitted && isFailed">
+          Add gift failed!<br />{{ errorMessage }}
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Credit Title <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Credit Title" autocomplete="title"
+                   name="creditTitle" [(ngModel)]="creditModel.creditTitle" minlength="3" maxlength="100" #creditTitle="ngModel" required>
+            <div class="alert-danger" *ngIf="creditTitle.errors && f.submitted">
+              <div *ngIf="creditTitle.errors.required">Credit Title is required</div>
+              <div *ngIf="creditTitle.errors.minlength">Credit Title must be at least 3 characters</div>
+              <div *ngIf="creditTitle.errors.maxlength">Credit Title must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Credit Name <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Credit Name" autocomplete="title"
+                   name="creditName" [(ngModel)]="creditModel.creditName" minlength="3" maxlength="100" #creditName="ngModel" required>
+            <div class="alert-danger" *ngIf="creditName.errors && f.submitted">
+              <div *ngIf="creditName.errors.required">Credit Name is required</div>
+              <div *ngIf="creditName.errors.minlength">Credit Name must be at least 3 characters</div>
+              <div *ngIf="creditName.errors.maxlength">Credit Name must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="textarea-input">Description <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <textarea id="textarea-input" name="description" rows="9" class="form-control" placeholder="Please Enter Description"
+                      [(ngModel)]="creditModel.description" #description="ngModel" minlength="1" maxlength="1000" required></textarea>
+          </div>
+          <div class="alert-danger" *ngIf="description.errors && f.submitted">
+            <div *ngIf="description.errors.required">Description is required</div>
+            <div *ngIf="description.errors.minlength">Description must be at least 1 characters</div>
+            <div *ngIf="description.errors.maxlength">Description must be at most 1000 characters</div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Deduct Credit <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="number" step="1" class="form-control" placeholder="Please Enter Deduct Credit" autocomplete="valueMax"
+                   name="deductCredit" [(ngModel)]="creditModel.deductCredit" minlength="1" maxlength="100" #deductCredit="ngModel" required>
+            <div class="alert-danger" *ngIf="deductCredit.errors && f.submitted">
+              <div *ngIf="deductCredit.errors.required">Deduct Credit is required</div>
+              <div *ngIf="deductCredit.errors.minlength">Deduct Credit must be at least 1 characters</div>
+              <div *ngIf="deductCredit.errors.maxlength">Deduct Credit must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Rank Detail Level <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <select id="rankingDetailId" name="rankingDetailId" class="form-control" [(ngModel)]="creditModel.rankingDetailId" #rankingDetailId="ngModel" required>
+              <option value="0">Please select</option>
+              <option *ngFor="let rankDetail of dropdownRankDetailList" [ngValue]="rankDetail.id">{{rankDetail.levelName}}</option>
+            </select>
+            <div class="alert-danger" *ngIf="rankingDetailId.errors && f.submitted">
+              <div *ngIf="rankingDetailId.errors.required">Rank Detail is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Company <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <select id="companyId" name="companyId" class="form-control" [(ngModel)]="creditModel.companyId" #companyId="ngModel" required>
+              <option value="0">Please select</option>
+              <option *ngFor="let companyDetail of dropdownCompanyList" [ngValue]="companyDetail.id">{{companyDetail.companyName}}</option>
+            </select>
+            <div class="alert-danger" *ngIf="companyId.errors && f.submitted">
+              <div *ngIf="companyId.errors.required">Rank Detail is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Submit</button>
+            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Reset</button>
+            <button type="reset" class="btn btn-sm btn-secondary" (click)="back2List()"><i class="fa fa-backward"></i> Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

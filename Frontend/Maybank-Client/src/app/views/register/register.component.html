@@ -1,0 +1,113 @@
+<div class="app-body">
+  <main class="main d-flex align-items-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <div class="card mx-4">
+            <div class="card-body p-4">
+              <form *ngIf="!isSuccessful" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+                <div class="alert alert-warning" *ngIf="f.submitted && isSignUpFailed">
+                  Signup failed!<br />{{ errorMessage }}
+                </div>
+
+                <h1>Register</h1>
+                <p class="text-muted">Create your account</p>
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">@</span>
+                  </div>
+                  <input type="email" class="form-control" placeholder="Email" autocomplete="email"
+                         name="email" [(ngModel)]="form.email" minlength="6" maxlength="50" #email="ngModel"
+                         email required>
+                </div>
+                <div class="alert-danger mb-2" *ngIf="email.errors && f.submitted">
+                  <div *ngIf="email.errors.required">Email is required</div>
+                  <div *ngIf="email.errors.email">Email must be a valid email address</div>
+                  <div *ngIf="email.errors.maxlength">Email must be at most 50 characters</div>
+                </div>
+
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-user"></i></span>
+                  </div>
+                  <input type="text" class="form-control" placeholder="DisplayName" autocomplete="displayName"
+                         name="displayName" [(ngModel)]="form.displayName" minlength="3" maxlength="20" #displayName="ngModel" required>
+                </div>
+                <div class="alert-danger mb-2" *ngIf="displayName.errors && f.submitted">
+                  <div *ngIf="displayName.errors.required">DisplayName is required</div>
+                  <div *ngIf="displayName.errors.minlength">DisplayName must be at least 3 characters</div>
+                  <div *ngIf="displayName.errors.maxlength">DisplayName must be at most 20 characters</div>
+                </div>
+
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-lock"></i></span>
+                  </div>
+                  <input type="password" class="form-control" placeholder="Password" autocomplete="new-password"
+                         name="password" [(ngModel)]="form.password" minlength="6" maxlength="40" #password="ngModel" required>
+                </div>
+                <div class="alert-danger mb-2" *ngIf="password.errors && f.submitted">
+                  <div *ngIf="password.errors.required">Password is required</div>
+                  <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+                  <div *ngIf="password.errors.maxlength">Password must be at most 40 characters</div>
+                </div>
+
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="icon-lock"></i></span>
+                  </div>
+                  <input type="password" class="form-control" placeholder="Repeat password" autocomplete="new-password"
+                         name="repeatPassword" [(ngModel)]="form.repeatPassword" minlength="6" maxlength="40" #repeatPassword="ngModel" required>
+                </div>
+                <div class="alert-danger mb-2" *ngIf="repeatPassword.errors && f.submitted">
+                  <div *ngIf="repeatPassword.errors.required">Repeat Password is required</div>
+                  <div *ngIf="repeatPassword.errors.minlength">Repeat Password must be at least 6 characters</div>
+                  <div *ngIf="repeatPassword.errors.maxlength">Repeat Password must be at most 40 characters</div>
+                  <div *ngIf="repeatPassword !== password">Repeat Password must be same with Password</div>
+                </div>
+
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="cil-mobile"></i></span>
+                  </div>
+                  <input type="text" class="form-control" placeholder="Mobile Number" autocomplete="mobileNumber"
+                         name="mobileNumber" [(ngModel)]="form.mobileNumber" minlength="3" maxlength="50" #mobileNumber="ngModel" required>
+                </div>
+                <div class="alert-danger mb-2" *ngIf="mobileNumber.errors && f.submitted">
+                  <div *ngIf="mobileNumber.errors.required">Mobile Number is required</div>
+                  <div *ngIf="mobileNumber.errors.minlength">Mobile Number  must be at least 3 characters</div>
+                  <div *ngIf="mobileNumber.errors.maxlength">Mobile Number  must be at most 50 characters</div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <button class="btn btn-block btn-success">Create Account</button>
+                  </div>
+                  <div class="col-6 text-right">
+                    <button type="button" class="btn btn-link px-0" (click)="loginPage()">Cancel</button>
+                  </div>
+                </div>
+              </form>
+
+              <div class="alert alert-success" *ngIf="isSuccessful">
+                Your registration is successful! You will be redirect to Login Page
+              </div>
+            </div>
+
+            <!--
+            <div class="card-footer p-4">
+              <div class="row">
+                <div class="col-6">
+                  <button class="btn btn-block btn-facebook" type="button"><span>facebook</span></button>
+                </div>
+                <div class="col-6">
+                  <button class="btn btn-block btn-twitter" type="button"><span>twitter</span></button>
+                </div>
+              </div>
+            </div>
+            -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

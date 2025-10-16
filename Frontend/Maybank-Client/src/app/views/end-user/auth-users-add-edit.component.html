@@ -1,0 +1,179 @@
+<div class="animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+      <strong *ngIf="isAddMode">Add Auth User</strong>
+      <strong *ngIf="!isAddMode">Edit Auth User</strong>
+      <small>Form</small>
+    </div>
+    <div class="card-body">
+      <form action="" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+        <div class="alert alert-success" *ngIf="f.submitted && isSuccessful">
+          {{successMessage}}
+        </div>
+        <div class="alert alert-warning" *ngIf="f.submitted && isFailed">
+          Add auth user failed!<br />{{ errorMessage }}
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Image</label>
+          <div class="col-md-9">
+            <input id="endUserImage" name="endUserImage" type="file" fileLimit="1" accept="image/*" class="form-control-file"
+                   multiple="" placeholder="Please Select Image"
+                   (change)="selectFiles($event)" [(ngModel)]="userModel.image" #endUserImage="ngModel">
+            <img *ngFor='let preview of previews' [src]="preview" class="preview">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Email <small><code>*</code></small></label>
+          <div class="col-md-9" *ngIf="isAddMode">
+            <input type="text" class="form-control" placeholder="Please Enter Email" autocomplete="email"
+                   name="email" [(ngModel)]="userModel.email" minlength="3" maxlength="100" #email="ngModel" required>
+            <div class="alert-danger" *ngIf="email.errors && f.submitted">
+              <div *ngIf="email.errors.required">Email is required</div>
+              <div *ngIf="email.errors.email">Email must be a valid email address</div>
+              <div *ngIf="email.errors.maxlength">Email must be at most 50 characters</div>
+            </div>
+          </div>
+          <div class="col-md-9" *ngIf="!isAddMode">
+            <p class="form-control-static">{{userModel.email}}</p>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Display Name <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Display Name" autocomplete="displayName"
+                   name="firstName" [(ngModel)]="userModel.displayName" minlength="3" maxlength="100" #displayName="ngModel" required>
+            <div class="alert-danger" *ngIf="displayName.errors && f.submitted">
+              <div *ngIf="displayName.errors.required">DisplayName is required</div>
+              <div *ngIf="displayName.errors.minlength">DisplayName must be at least 3 characters</div>
+              <div *ngIf="displayName.errors.maxlength">DisplayName must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="isAddMode">
+          <label class="col-md-3 col-form-label">Password <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Password" autocomplete="password"
+                   name="password" [(ngModel)]="userModel.password" minlength="3" maxlength="50" #password="ngModel" required>
+            <div class="alert-danger" *ngIf="password.errors && f.submitted">
+              <div *ngIf="password.errors.required">Password is required</div>
+              <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+              <div *ngIf="password.errors.maxlength">Password must be at most 40 characters</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="isAddMode">
+          <label class="col-md-3 col-form-label">Repeat Password <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Repeat Password" autocomplete="repeatPassword"
+                   name="repeatPassword" [(ngModel)]="userModel.repeatPassword" minlength="3" maxlength="50" #repeatPassword="ngModel" required>
+            <div class="alert-danger" *ngIf="repeatPassword.errors && f.submitted">
+              <div *ngIf="repeatPassword.errors.required">Repeat Password is required</div>
+              <div *ngIf="repeatPassword.errors.minlength">Repeat Password must be at least 6 characters</div>
+              <div *ngIf="repeatPassword.errors.maxlength">Repeat Password must be at most 40 characters</div>
+              <div *ngIf="repeatPassword !== password">Repeat Password must be same with Password</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Phone <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Phone Number" autocomplete="phone"
+                   name="phone" [(ngModel)]="userModel.phone" minlength="3" maxlength="100" #phone="ngModel" required>
+            <div class="alert-danger" *ngIf="phone.errors && f.submitted">
+              <div *ngIf="phone.errors.required">Phone Number is required</div>
+              <div *ngIf="phone.errors.minlength">Phone Number must be at least 3 characters</div>
+              <div *ngIf="phone.errors.maxlength">Phone Number must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="inline-radios">Gender <small><code>*</code></small></label>
+          <div class="col-md-9 col-form-label">
+            <div class="form-check form-check-inline mr-1">
+              <input class="form-check-input" type="radio" name="inline-radios" id="genderRadio0" [value]="0" #gender="ngModel" name="gender" [(ngModel)]="userModel.gender" required>
+              <label class="form-check-label" for="genderRadio0">Male</label>
+            </div>
+            <div class="form-check form-check-inline mr-1">
+              <input class="form-check-input" type="radio" name="inline-radios" id="genderRadio1" [value]="1" #gender="ngModel" name="gender" [(ngModel)]="userModel.gender" required>
+              <label class="form-check-label" for="genderRadio1">Female</label>
+            </div>
+            <div class="form-check form-check-inline mr-1">
+              <input class="form-check-input" type="radio" name="inline-radios" id="genderRadio2" [value]="2" #gender="ngModel" name="gender" [(ngModel)]="userModel.gender" required>
+              <label class="form-check-label" for="genderRadio2">Others</label>
+            </div>
+            <div class="alert-danger" *ngIf="gender.errors && f.submitted">
+              <div *ngIf="gender.errors.required">Gender is required</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="inline-radios">Status Enable <small><code>*</code></small></label>
+          <div class="col-md-9 col-form-label">
+            <div class="form-check form-check-inline mr-1" id="inline-radios">
+              <input class="form-check-input" type="radio" name="inline-radios" id="inlineRadio1" [value]=true #enabled="ngModel" name="enabled" [(ngModel)]="userModel.enabled" required>
+              <label class="form-check-label" for="inlineRadio1">Enable</label>
+            </div>
+            <div class="form-check form-check-inline mr-1">
+              <input class="form-check-input" type="radio" name="inline-radios" id="inlineRadio2" [value]=false #enabled="ngModel" name="enabled" [(ngModel)]="userModel.enabled" required>
+              <label class="form-check-label" for="inlineRadio2">Disable</label>
+            </div>
+            <div class="alert-danger" *ngIf="enabled.errors && f.submitted">
+              <div *ngIf="enabled.errors.required">Status is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="date-input">Date of Birth</label>
+          <div class="col-md-9">
+            <input class="form-control" id="date-input" type="date" name="date-input"
+                   placeholder="Please Enter Date of Birth" #dob="ngModel" name="dob" [(ngModel)]="userModel.dob">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Personal Description</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Personal Description" autocomplete="personalDescription"
+                   name="personalDescription" [(ngModel)]="userModel.personalDescription" #personalDescription="ngModel">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Current Job</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Current Job" autocomplete="currentJob"
+                   name="currentJob" [(ngModel)]="userModel.currentJob" #currentJob="ngModel">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Role</label>
+          <div class="col-md-9 col-form-label">
+            <div class="form-check form-check-inline mr-1" *ngFor="let role of roles; let i=index">
+              <input class="form-check-input" type="checkbox" id="inline-checkbox{{i}}" #roleSelect="ngModel" value="{{role.code}}" name="{{role.name}}" [(ngModel)]="role.checked">
+              <label class="form-check-label">{{role.name}}</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="textarea-input">Remark</label>
+          <div class="col-md-9">
+            <textarea id="textarea-input" name="remark" rows="9" class="form-control" placeholder="Please Enter Remark"
+                      [(ngModel)]="userModel.remark" #remark="ngModel"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Submit</button>
+            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Reset</button>
+            <button type="reset" class="btn btn-sm btn-secondary" (click)="back2List()"><i class="fa fa-backward"></i> Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

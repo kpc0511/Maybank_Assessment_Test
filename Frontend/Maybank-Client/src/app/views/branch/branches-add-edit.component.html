@@ -1,0 +1,175 @@
+<div class="animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+      <strong *ngIf="isAddMode">Add Branch</strong>
+      <strong *ngIf="!isAddMode">Edit Branch</strong>
+      <small>Form</small>
+    </div>
+    <div class="card-body">
+      <form action="" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+        <div class="alert alert-success" *ngIf="f.submitted && isSuccessful">
+          {{successMessage}}
+        </div>
+        <div class="alert alert-warning" *ngIf="f.submitted && isFailed">
+          Add branch failed!<br />{{ errorMessage }}
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Image</label>
+          <div class="col-md-9">
+            <input id="branchImage" name="branchImage" type="file" fileLimit="1" accept="image/*" class="form-control-file"
+                   multiple="" placeholder="Please Select Image"
+                   (change)="selectFiles($event)">
+            <img *ngFor='let preview of previews' [src]="preview" class="preview">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Branch Name <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Branch Name" autocomplete="branchName"
+                   name="branchName" [(ngModel)]="branchModel.branchName" minlength="3" maxlength="100" #branchName="ngModel" required>
+            <div class="alert-danger" *ngIf="branchName.errors && f.submitted">
+              <div *ngIf="branchName.errors.required">Branch Name is required</div>
+              <div *ngIf="branchName.errors.minlength">Branch Name must be at least 3 characters</div>
+              <div *ngIf="branchName.errors.maxlength">Branch Name must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Address 1 <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Address 1" autocomplete="address1"
+                   name="address1" [(ngModel)]="branchModel.address1" minlength="3" maxlength="100" #address1="ngModel" required>
+            <div class="alert-danger" *ngIf="address1.errors && f.submitted">
+              <div *ngIf="address1.errors.required">Address 1 is required</div>
+              <div *ngIf="address1.errors.minlength">Address 1 must be at least 3 characters</div>
+              <div *ngIf="address1.errors.maxlength">Address 1 must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Address 2 <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Address 2" autocomplete="address2"
+                   name="address1" [(ngModel)]="branchModel.address2" minlength="3" maxlength="100" #address2="ngModel" required>
+            <div class="alert-danger" *ngIf="address2.errors && f.submitted">
+              <div *ngIf="address2.errors.required">Address 2 is required</div>
+              <div *ngIf="address2.errors.minlength">Address 2 must be at least 3 characters</div>
+              <div *ngIf="address2.errors.maxlength">Address 2 must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Address 3 <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Address 3" autocomplete="address3"
+                   name="address1" [(ngModel)]="branchModel.address3" minlength="3" maxlength="100" #address3="ngModel" required>
+            <div class="alert-danger" *ngIf="address3.errors && f.submitted">
+              <div *ngIf="address3.errors.required">Address 3 is required</div>
+              <div *ngIf="address3.errors.minlength">Address 3 must be at least 3 characters</div>
+              <div *ngIf="address3.errors.maxlength">Address 3 must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">State <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter State" autocomplete="state"
+                   name="address1" [(ngModel)]="branchModel.state" minlength="3" maxlength="100" #state="ngModel" required>
+            <div class="alert-danger" *ngIf="state.errors && f.submitted">
+              <div *ngIf="state.errors.required">State is required</div>
+              <div *ngIf="state.errors.minlength">State must be at least 3 characters</div>
+              <div *ngIf="state.errors.maxlength">State must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">City <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter City" autocomplete="city"
+                   name="address1" [(ngModel)]="branchModel.city" minlength="3" maxlength="100" #city="ngModel" required>
+            <div class="alert-danger" *ngIf="city.errors && f.submitted">
+              <div *ngIf="city.errors.required">City is required</div>
+              <div *ngIf="city.errors.minlength">City must be at least 3 characters</div>
+              <div *ngIf="city.errors.maxlength">City must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Postcode <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Postcode" autocomplete="postcode"
+                   name="address1" [(ngModel)]="branchModel.postcode" minlength="3" maxlength="100" #postcode="ngModel" required>
+            <div class="alert-danger" *ngIf="state.errors && f.submitted">
+              <div *ngIf="postcode.errors.required">Postcode is required</div>
+              <div *ngIf="postcode.errors.minlength">Postcode must be at least 3 characters</div>
+              <div *ngIf="postcode.errors.maxlength">Postcode must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Table Types <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <ng-multiselect-dropdown
+              name="tableType"
+              [placeholder]="'Select Table Type'"
+              [settings]="dropdownSettings"
+              [data]="dropdownTableList"
+              [(ngModel)]="selectedTableItems"
+              (onSelect)="onItemSelect($event)"
+              (onSelectAll)="onSelectAll($event)"
+              (onDeSelect)="onItemDeSelect($event)"
+            >
+            </ng-multiselect-dropdown>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Gifts <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <ng-multiselect-dropdown
+              name="gift"
+              [placeholder]="'Select Gift'"
+              [settings]="dropdownGiftSettings"
+              [data]="dropdownGiftList"
+              [(ngModel)]="selectedGiftItems"
+              (onSelect)="onSelectGift($event)"
+              (onSelectAll)="onSelectAllGift($event)"
+              (onDeSelect)="onDeSelectGift($event)"
+            >
+            </ng-multiselect-dropdown>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Company <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <select id="companyId" name="companyId" class="form-control" [(ngModel)]="branchModel.companyId" #companyId="ngModel" required>
+              <option value="0">Please select</option>
+              <option *ngFor="let companyDetail of dropdownCompanyList" [ngValue]="companyDetail.id">{{companyDetail.companyName}}</option>
+            </select>
+            <div class="alert-danger" *ngIf="companyId.errors && f.submitted">
+              <div *ngIf="companyId.errors.required">Rank Detail is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Submit</button>
+            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Reset</button>
+            <button type="reset" class="btn btn-sm btn-secondary" (click)="back2List()"><i class="fa fa-backward"></i> Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

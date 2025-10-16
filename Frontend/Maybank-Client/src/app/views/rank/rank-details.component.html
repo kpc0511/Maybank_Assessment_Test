@@ -1,0 +1,94 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Rank Detail Table Listing
+        </div>
+        <div class="card-body">
+          <div class="alert alert-success" *ngIf="isDeleteSuccessful">
+            {{successDeleteMessage}}
+          </div>
+          <div class="alert alert-warning" *ngIf="isDeleteFailed">
+            Delete rank detail failed!<br />{{ errorDeleteMessage }}
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-12"><a routerLink="/rankManage/add-rank-detail" class="btn btn-sm btn-success mb-2">Add Rank Detail</a></div>
+            <div class="col-md-12">
+              <div class="input-group">
+                <input type="text" id="input1-group2" name="input1-group2" class="form-control" placeholder="Search by Level Name" [(ngModel)]="levelName" />
+                <span class="input-group-prepend">
+                    <button type="button" class="btn btn-primary" (click)="searchLevelName()"><i class="fa fa-search"></i> Search</button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <table class="table table-bordered table-striped table-sm">
+            <thead>
+              <tr>
+                <th class="align-top">Id</th>
+                <th class="align-top">Image</th>
+                <th class="align-top">Level Title</th>
+                <th class="align-top">Level Name</th>
+                <th class="align-top">Min Value</th>
+                <th class="align-top">Max Value</th>
+                <th class="align-top">Rank Type</th>
+                <th class="align-top">Company</th>
+                <th class="align-top">Create Date<br>Update Date</th>
+                <th class="align-top">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let rankDetailData of rankingDetails | paginate : {
+                    itemsPerPage: pageSize,
+                    currentPage: page,
+                    totalItems: count
+                  };
+                  let i = index"
+                  [class.active]="i == currentIndex"
+                  (click)="setActiveRankDetail(rankDetailData, i)"
+              >
+                <td>{{ rankDetailData.id }}</td>
+                <td><img [src]= "getImage(rankDetailData.image)" alt="" /></td>
+                <td>{{ rankDetailData.levelTitle }}</td>
+                <td>{{ rankDetailData.levelName }}</td>
+                <td>{{ rankDetailData.valueMin }}</td>
+                <td>{{ rankDetailData.valueMax }}</td>
+                <td>{{ rankDetailData.ranking['rankingName'] }}</td>
+                <td>{{ rankDetailData.company !== null ? rankDetailData.company['companyName'] : "" }}</td>
+                <td>
+                  {{ (rankDetailData.createDate !== null) ? (rankDetailData.createDate | date: 'yyyy-MM-dd HH:mm:ss') : '-'}}<br>
+                  {{ (rankDetailData.updateDate !== null) ? (rankDetailData.updateDate | date: 'yyyy-MM-dd HH:mm:ss') : '-'}}
+                </td>
+                <td>
+                  <a routerLink="/rankManage/edit-rank-detail/{{rankDetailData.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
+                  <button (click)="deleteRankDetail(rankDetailData.id)" class="btn btn-sm btn-danger btn-delete-user">
+                    <span>Delete</span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination-controls class="page-item text-center"
+                               previousLabel="Prev"
+                               nextLabel="Next"
+                               [responsive]="true"
+                               (pageChange)="handlePageChange($event)"
+                               screenReaderPageLabel="page"
+                               screenReaderCurrentLabel="You're on page"
+          ></pagination-controls>
+          Items per Page:
+          <select (change)="handlePageSizeChange($event)">
+            <option *ngFor="let size of pageSizes" [ngValue]="size">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

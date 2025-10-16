@@ -1,0 +1,54 @@
+<div class="animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+      <strong>Reload End User</strong>
+      <small>Form</small>
+    </div>
+    <div class="card-body">
+      <form action="" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+        <div class="alert alert-success" *ngIf="f.submitted && isSuccessful">
+          {{successMessage}}
+        </div>
+        <div class="alert alert-warning" *ngIf="f.submitted && isFailed">
+          Reload user failed!<br />{{ errorMessage }}
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Display Name</label>
+          <div class="col-md-9">
+            <p class="form-control-static">{{userModel.displayName}}</p>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Credit Amount <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="number" step="1" class="form-control" placeholder="Please Enter Credit Amount" autocomplete="valueMax"
+                   name="credit" [(ngModel)]="userModel.credit" minlength="1" maxlength="100" #credit="ngModel" required>
+            <div class="alert-danger" *ngIf="credit.errors && f.submitted">
+              <div *ngIf="credit.errors.required">Credit is required</div>
+              <div *ngIf="credit.errors.minlength">Credit must be at least 1 characters</div>
+              <div *ngIf="credit.errors.maxlength">Credit must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="textarea-input">Description</label>
+          <div class="col-md-9">
+            <textarea id="textarea-input" name="remark" rows="9" class="form-control" placeholder="Please Enter Description"
+                      [(ngModel)]="userModel.description" #remark="ngModel"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Submit</button>
+            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Reset</button>
+            <button type="reset" class="btn btn-sm btn-secondary" (click)="back2List()"><i class="fa fa-backward"></i> Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

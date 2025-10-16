@@ -1,0 +1,66 @@
+<div class="animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+      <strong *ngIf="isAddMode">Add Rank Type</strong>
+      <strong *ngIf="!isAddMode">Edit Rank Type</strong>
+      <small>Form</small>
+    </div>
+    <div class="card-body">
+      <form action="" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+        <div class="alert alert-success" *ngIf="f.submitted && isSuccessful">
+          {{successMessage}}
+        </div>
+        <div class="alert alert-warning" *ngIf="f.submitted && isFailed">
+          Add rank type failed!<br />{{ errorMessage }}
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Rank Name <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Rank Name" autocomplete="rankingName"
+                   name="rankingName" [(ngModel)]="rankModel.rankingName" minlength="3" maxlength="100" #rankingName="ngModel" required>
+            <div class="alert-danger" *ngIf="rankingName.errors && f.submitted">
+              <div *ngIf="rankingName.errors.required">Rank Name is required</div>
+              <div *ngIf="rankingName.errors.minlength">Rank Name must be at least 3 characters</div>
+              <div *ngIf="rankingName.errors.maxlength">Rank Name must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Rank Type <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <select id="rankingType" name="rankingType" class="form-control" [(ngModel)]="rankModel.rankingType" #rankingType="ngModel" required>
+              <option value="0">Please select</option>
+              <option *ngFor="let rankType of rankTypes" [ngValue]="rankType.id">{{rankType.name}}</option>
+            </select>
+            <div class="alert-danger" *ngIf="rankingName.errors && f.submitted">
+              <div *ngIf="rankingName.errors.required">Rank Type is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Company <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <select id="companyId" name="companyId" class="form-control" [(ngModel)]="rankModel.companyId" #companyId="ngModel" required>
+              <option value="0">Please select</option>
+              <option *ngFor="let companyDetail of dropdownCompanyList" [ngValue]="companyDetail.id">{{companyDetail.companyName}}</option>
+            </select>
+            <div class="alert-danger" *ngIf="companyId.errors && f.submitted">
+              <div *ngIf="companyId.errors.required">Rank Detail is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Submit</button>
+            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Reset</button>
+            <button type="reset" class="btn btn-sm btn-secondary" (click)="back2List()"><i class="fa fa-backward"></i> Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

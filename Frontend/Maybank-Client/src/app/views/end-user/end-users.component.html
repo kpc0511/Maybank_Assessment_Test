@@ -1,0 +1,101 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> End User Table Listing
+        </div>
+        <div class="card-body">
+          <div class="alert alert-success" *ngIf="isDeleteSuccessful">
+            {{successDeleteMessage}}
+          </div>
+          <div class="alert alert-warning" *ngIf="isDeleteFailed">
+            Delete end user failed!<br />{{ errorDeleteMessage }}
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-12"><a routerLink="/userManage/add-end-user" class="btn btn-sm btn-success mb-2">Add End User</a></div>
+            <div class="col-md-12">
+              <div class="input-group">
+                <input type="text" id="input1-group2" name="input1-group2" class="form-control" placeholder="Search by DisplayName" [(ngModel)]="displayName" />
+                <span class="input-group-prepend">
+                    <button type="button" class="btn btn-primary" (click)="searchDisplayName()"><i class="fa fa-search"></i> Search</button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <table class="table table-bordered table-striped table-sm">
+            <thead>
+              <tr>
+                <th class="align-top">Id</th>
+                <th class="align-top">Image</th>
+                <th class="align-top">Display Name</th>
+                <th class="align-top">Email</th>
+                <th class="align-top">Gender</th>
+                <th class="align-top">Remark</th>
+                <th class="align-top">Status</th>
+                <th class="align-top">Login Method</th>
+                <th class="align-top">Company</th>
+                <th class="align-top">Create Date<br>Update Date<br>Last Login Date</th>
+                <th class="align-top">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let userData of users | paginate : {
+                    itemsPerPage: pageSize,
+                    currentPage: page,
+                    totalItems: count
+                  };
+                  let i = index"
+                  [class.active]="i == currentIndex"
+                  (click)="setActiveUser(userData, i)"
+              >
+                <td>{{ userData.id }}</td>
+                <td><img [src]= "getImage(userData.image)" alt="" height="80px" /></td>
+                <td>{{ userData.displayName }}</td>
+                <td>{{ userData.email }}</td>
+                <td>{{ getGender(userData.gender) }}</td>
+                <td>{{ userData.remark }}</td>
+                <td>
+                  <span [ngClass]="userData.enabled == true ? 'badge badge-success' : 'badge badge-danger'">{{ userData.enabled == true ? 'Enable' : 'Disable'}}</span>
+                </td>
+                <td>{{ userData.provider }}</td>
+                <td>{{ userData.company !== null ? userData.company['companyName'] : "" }}</td>
+                <td>
+                  {{ (userData.createDate !== null) ? (userData.createDate | date: 'yyyy-MM-dd HH:mm:ss') : '-'}}<br>
+                  {{ (userData.updateDate !== null) ? (userData.updateDate | date: 'yyyy-MM-dd HH:mm:ss') : '-'}}<br>
+                  {{ (userData.lastLoginDate !== null) ? (userData.lastLoginDate | date: 'yyyy-MM-dd HH:mm:ss') : '-'}}
+                </td>
+                <td>
+                  <a routerLink="/userManage/edit-end-users/{{userData.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
+                  <button (click)="deleteEndUser(userData.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="user.isDeleting">
+                    <span *ngIf="user.isDeleting" class="spinner-border spinner-border-sm"></span>
+                    <span *ngIf="!user.isDeleting">Delete</span>
+                  </button>
+                  <a routerLink="/userManage/reload-end-users/{{userData.id}}" class="btn btn-sm btn-success mr-1">Reload</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination-controls class="page-item text-center"
+                               previousLabel="Prev"
+                               nextLabel="Next"
+                               [responsive]="true"
+                               (pageChange)="handlePageChange($event)"
+                               screenReaderPageLabel="page"
+                               screenReaderCurrentLabel="You're on page"
+          ></pagination-controls>
+          Items per Page:
+          <select (change)="handlePageSizeChange($event)">
+            <option *ngFor="let size of pageSizes" [ngValue]="size">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

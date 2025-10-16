@@ -1,0 +1,75 @@
+<div class="animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+      <strong *ngIf="isAddMode">Add Table</strong>
+      <strong *ngIf="!isAddMode">Edit Table</strong>
+      <small>Form</small>
+    </div>
+    <div class="card-body">
+      <form action="" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+        <div class="alert alert-success" *ngIf="f.submitted && isSuccessful">
+          {{successMessage}}
+        </div>
+        <div class="alert alert-warning" *ngIf="f.submitted && isFailed">
+          Add table failed!<br />{{ errorMessage }}
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Table Name <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Table Name" autocomplete="displayName"
+                   name="tableName" [(ngModel)]="tableModel.tableName" minlength="3" maxlength="100" #tableName="ngModel" required>
+            <div class="alert-danger" *ngIf="tableName.errors && f.submitted">
+              <div *ngIf="tableName.errors.required">DisplayName is required</div>
+              <div *ngIf="tableName.errors.minlength">DisplayName must be at least 3 characters</div>
+              <div *ngIf="tableName.errors.maxlength">DisplayName must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Table Type <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Phone Number" autocomplete="phone"
+                   name="tableType" [(ngModel)]="tableModel.tableType" minlength="3" maxlength="100" #tableType="ngModel" required>
+            <div class="alert-danger" *ngIf="tableType.errors && f.submitted">
+              <div *ngIf="tableType.errors.required">Phone Number is required</div>
+              <div *ngIf="tableType.errors.minlength">Phone Number must be at least 3 characters</div>
+              <div *ngIf="tableType.errors.maxlength">Phone Number must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Number of Seat <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="number" class="form-control" placeholder="Please Enter Number of Seat" autocomplete="phone"
+                   name="numberOfSeat" [(ngModel)]="tableModel.numberOfSeat" #numberOfSeat="ngModel" required>
+            <div class="alert-danger" *ngIf="numberOfSeat.errors && f.submitted">
+              <div *ngIf="numberOfSeat.errors.required">Phone Number is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+        <label class="col-md-3 col-form-label">Company <small><code>*</code></small></label>
+        <div class="col-md-9">
+          <select id="companyId" name="companyId" class="form-control" [(ngModel)]="tableModel.companyId" #companyId="ngModel" required>
+            <option value="0">Please select</option>
+            <option *ngFor="let companyDetail of dropdownCompanyList" [ngValue]="companyDetail.id">{{companyDetail.companyName}}</option>
+          </select>
+          <div class="alert-danger" *ngIf="companyId.errors && f.submitted">
+            <div *ngIf="companyId.errors.required">Rank Detail is required</div>
+          </div>
+        </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Submit</button>
+            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Reset</button>
+            <button type="reset" class="btn btn-sm btn-secondary" (click)="back2List()"><i class="fa fa-backward"></i> Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

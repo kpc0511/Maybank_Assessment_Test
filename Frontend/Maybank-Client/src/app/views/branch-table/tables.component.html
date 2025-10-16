@@ -1,0 +1,88 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Table Listing
+        </div>
+        <div class="card-body">
+          <div class="alert alert-success" *ngIf="isDeleteSuccessful">
+            {{successDeleteMessage}}
+          </div>
+          <div class="alert alert-warning" *ngIf="isDeleteFailed">
+            Delete table failed!<br />{{ errorDeleteMessage }}
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-12"><a routerLink="/tableManage/add-table" class="btn btn-sm btn-success mb-2">Add Table</a></div>
+            <div class="col-md-12">
+              <div class="input-group">
+                <input type="text" id="input1-group2" name="input1-group2" class="form-control" placeholder="Search by TableName" [(ngModel)]="tableName" />
+                <span class="input-group-prepend">
+                    <button type="button" class="btn btn-primary" (click)="searchTableName()"><i class="fa fa-search"></i> Search</button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <table class="table table-bordered table-striped table-sm">
+            <thead>
+              <tr>
+                <th class="align-top">Id</th>
+                <th class="align-top">Table Name</th>
+                <th class="align-top">Table Type</th>
+                <th class="align-top">Number of Seat</th>
+                <th class="align-top">Company</th>
+                <th class="align-top">Create Date<br>Update Date</th>
+                <th class="align-top">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let tableData of tables | paginate : {
+                    itemsPerPage: pageSize,
+                    currentPage: page,
+                    totalItems: count
+                  };
+                  let i = index"
+                  [class.active]="i == currentIndex"
+                  (click)="setActiveTable(tableData, i)"
+              >
+                <td>{{ tableData.id }}</td>
+                <td>{{ tableData.tableName }}</td>
+                <td>{{ tableData.tableType }}</td>
+                <td>{{ tableData.numberOfSeat }}</td>
+                <td>{{ tableData.company !== null ? tableData.company['companyName'] : "" }}</td>
+                <td>
+                  {{ (tableData.createDate !== null) ? (tableData.createDate | date: 'yyyy-MM-dd HH:mm:ss') : '-'}}<br>
+                  {{ (tableData.updateDate !== null) ? (tableData.updateDate | date: 'yyyy-MM-dd HH:mm:ss') : '-'}}
+                </td>
+                <td>
+                  <a routerLink="/tableManage/edit-table/{{tableData.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
+                  <button (click)="deleteTable(tableData.id)" class="btn btn-sm btn-danger btn-delete-user">
+                    <span>Delete</span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination-controls class="page-item text-center"
+                               previousLabel="Prev"
+                               nextLabel="Next"
+                               [responsive]="true"
+                               (pageChange)="handlePageChange($event)"
+                               screenReaderPageLabel="page"
+                               screenReaderCurrentLabel="You're on page"
+          ></pagination-controls>
+          Items per Page:
+          <select (change)="handlePageSizeChange($event)">
+            <option *ngFor="let size of pageSizes" [ngValue]="size">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

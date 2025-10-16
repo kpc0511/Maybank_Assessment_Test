@@ -1,0 +1,118 @@
+<div class="animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+      <strong>User Profile</strong>
+      <small>Form</small>
+    </div>
+    <div class="card-body">
+      <form action="" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+        <div class="alert alert-success" *ngIf="f.submitted && isUpdateSuccessful">
+          {{successMessage}}
+        </div>
+        <div class="alert alert-warning" *ngIf="f.submitted && isUpdateFailed">
+          Update profile failed!<br />{{ errorMessage }}
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Email</label>
+          <div class="col-md-9">
+            <p class="form-control-static">{{profileModel.email}}</p>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">DisplayName <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Display Name" autocomplete="displayName"
+                   name="firstName" [(ngModel)]="profileModel.displayName" minlength="3" maxlength="100" #displayName="ngModel" required>
+            <div class="alert-danger" *ngIf="displayName.errors && f.submitted">
+              <div *ngIf="displayName.errors.required">DisplayName is required</div>
+              <div *ngIf="displayName.errors.minlength">DisplayName must be at least 3 characters</div>
+              <div *ngIf="displayName.errors.maxlength">DisplayName must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Phone <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Phone Number" autocomplete="phone"
+                   name="phone" [(ngModel)]="profileModel.phone" minlength="3" maxlength="100" #phone="ngModel" required>
+            <div class="alert-danger" *ngIf="phone.errors && f.submitted">
+              <div *ngIf="phone.errors.required">Phone Number is required</div>
+              <div *ngIf="phone.errors.minlength">Phone Number must be at least 3 characters</div>
+              <div *ngIf="phone.errors.maxlength">Phone Number must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="inline-radios">Gender <small><code>*</code></small></label>
+          <div class="col-md-9 col-form-label">
+            <div class="form-check form-check-inline mr-1">
+              <input class="form-check-input" type="radio" name="inline-radios" id="genderRadio0" [value]="0" #gender="ngModel" name="gender" [(ngModel)]="profileModel.gender" required>
+              <label class="form-check-label" for="genderRadio0">Male</label>
+            </div>
+            <div class="form-check form-check-inline mr-1">
+              <input class="form-check-input" type="radio" name="inline-radios" id="genderRadio1" [value]="1" #gender="ngModel" name="gender" [(ngModel)]="profileModel.gender" required>
+              <label class="form-check-label" for="genderRadio1">Female</label>
+            </div>
+            <div class="form-check form-check-inline mr-1">
+              <input class="form-check-input" type="radio" name="inline-radios" id="genderRadio2" [value]="2" #gender="ngModel" name="gender" [(ngModel)]="profileModel.gender" required>
+              <label class="form-check-label" for="genderRadio2">Others</label>
+            </div>
+            <div class="alert-danger" *ngIf="gender.errors && f.submitted">
+              <div *ngIf="gender.errors.required">Gender is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="date-input">Date of Birth</label>
+          <div class="col-md-9">
+            <input class="form-control" id="date-input" type="date" name="date-input"
+                   placeholder="Please Enter Date of Birth" #dob="ngModel" name="dob" [(ngModel)]="profileModel.dob">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Personal Description</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Personal Description" autocomplete="personalDescription"
+                   name="personalDescription" [(ngModel)]="profileModel.personalDescription" #personalDescription="ngModel">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Current Job</label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Current Job" autocomplete="currentJob"
+                   name="currentJob" [(ngModel)]="profileModel.currentJob" #currentJob="ngModel">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Role</label>
+          <div class="col-md-9 col-form-label">
+            <div class="form-check form-check-inline mr-1" *ngFor="let role of roles; let i=index">
+              <input class="form-check-input" type="checkbox" id="inline-checkbox{{i}}" #roleSelect="ngModel" value="{{role.code}}" name="{{role.name}}" [(ngModel)]="role.checked">
+              <label class="form-check-label">{{role.name}}</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="textarea-input">Remark</label>
+          <div class="col-md-9">
+            <textarea id="textarea-input" name="remark" rows="9" class="form-control" placeholder="Please Enter Remark"
+                      [(ngModel)]="profileModel.remark" #remark="ngModel"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Submit</button>
+            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Reset</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

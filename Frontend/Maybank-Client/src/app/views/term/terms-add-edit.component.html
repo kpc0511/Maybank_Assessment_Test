@@ -1,0 +1,83 @@
+<div class="animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+      <strong *ngIf="isAddMode">Add Term</strong>
+      <strong *ngIf="!isAddMode">Edit Term</strong>
+      <small>Form</small>
+    </div>
+    <div class="card-body">
+      <form action="" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+        <div class="alert alert-success" *ngIf="f.submitted && isSuccessful">
+          {{successMessage}}
+        </div>
+        <div class="alert alert-warning" *ngIf="f.submitted && isFailed">
+          Add gift failed!<br />{{ errorMessage }}
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Title <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Title" autocomplete="title"
+                   name="title" [(ngModel)]="termModel.title" minlength="3" maxlength="100" #title="ngModel" required>
+            <div class="alert-danger" *ngIf="title.errors && f.submitted">
+              <div *ngIf="title.errors.required">Title is required</div>
+              <div *ngIf="title.errors.minlength">Title must be at least 3 characters</div>
+              <div *ngIf="title.errors.maxlength">Title must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="textarea-input">Description <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <textarea id="textarea-input" name="description" rows="9" class="form-control" placeholder="Please Enter Description"
+                      [(ngModel)]="termModel.description" #description="ngModel" minlength="1" maxlength="1000" required></textarea>
+          </div>
+          <div class="alert-danger" *ngIf="description.errors && f.submitted">
+            <div *ngIf="description.errors.required">Description is required</div>
+            <div *ngIf="description.errors.minlength">Description must be at least 1 characters</div>
+            <div *ngIf="description.errors.maxlength">Description must be at most 1000 characters</div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="inline-radios">Status <small><code>*</code></small></label>
+          <div class="col-md-9 col-form-label">
+            <div class="form-check form-check-inline mr-1" id="inline-radios">
+              <input class="form-check-input" type="radio" name="inline-radios" id="inlineRadio1" [value]=true #status="ngModel" name="status" [(ngModel)]="termModel.status" required>
+              <label class="form-check-label" for="inlineRadio1">Enable</label>
+            </div>
+            <div class="form-check form-check-inline mr-1">
+              <input class="form-check-input" type="radio" name="inline-radios" id="inlineRadio2" [value]=false #status="ngModel" name="status" [(ngModel)]="termModel.status" required>
+              <label class="form-check-label" for="inlineRadio2">Disable</label>
+            </div>
+            <div class="alert-danger" *ngIf="status.errors && f.submitted">
+              <div *ngIf="status.errors.required">Status is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Company <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <select id="companyId" name="companyId" class="form-control" [(ngModel)]="termModel.companyId" #companyId="ngModel" required>
+              <option value="0">Please select</option>
+              <option *ngFor="let companyDetail of dropdownCompanyList" [ngValue]="companyDetail.id">{{companyDetail.companyName}}</option>
+            </select>
+            <div class="alert-danger" *ngIf="companyId.errors && f.submitted">
+              <div *ngIf="companyId.errors.required">Rank Detail is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Submit</button>
+            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Reset</button>
+            <button type="reset" class="btn btn-sm btn-secondary" (click)="back2List()"><i class="fa fa-backward"></i> Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

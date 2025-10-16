@@ -1,0 +1,106 @@
+<div class="animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+      <strong *ngIf="isAddMode">Add Promotion / Announcement</strong>
+      <strong *ngIf="!isAddMode">Edit Promotion / Announcement</strong>
+      <small>Form</small>
+    </div>
+    <div class="card-body">
+      <form action="" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+        <div class="alert alert-success" *ngIf="f.submitted && isSuccessful">
+          {{successMessage}}
+        </div>
+        <div class="alert alert-warning" *ngIf="f.submitted && isFailed">
+          Add promotion failed!<br />{{ errorMessage }}
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Image</label>
+          <div class="col-md-9">
+            <input id="branchImage" name="branchImage" type="file" fileLimit="1" accept="image/*" class="form-control-file"
+                   multiple="" placeholder="Please Select Image"
+                   (change)="selectFiles($event)">
+            <img *ngFor='let preview of previews' [src]="preview" class="preview">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Promotion / Announcement Title <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Promotion / Announcement Title" autocomplete="title"
+                   name="title" [(ngModel)]="promotionModel.title" minlength="3" maxlength="100" #title="ngModel" required>
+            <div class="alert-danger" *ngIf="title.errors && f.submitted">
+              <div *ngIf="title.errors.required">Promotion / Announcement Title is required</div>
+              <div *ngIf="title.errors.minlength">Promotion / Announcement Title must be at least 3 characters</div>
+              <div *ngIf="title.errors.maxlength">Promotion / Announcement Title must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Promotion / Announcement Name <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Promotion / Announcement Name" autocomplete="name"
+                   name="name" [(ngModel)]="promotionModel.name" minlength="3" maxlength="100" #name="ngModel" required>
+            <div class="alert-danger" *ngIf="name.errors && f.submitted">
+              <div *ngIf="name.errors.required">Promotion / Announcement Name is required</div>
+              <div *ngIf="name.errors.minlength">Promotion / Announcement Name must be at least 3 characters</div>
+              <div *ngIf="name.errors.maxlength">Promotion / Announcement Name must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Promotion Type <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <select id="promotionType" name="promotionType" class="form-control" [(ngModel)]="promotionModel.promotionType" #promotionType="ngModel" required>
+              <option value="0">Please select</option>
+              <option *ngFor="let ptype of promotionTypes" [ngValue]="ptype.id">{{ptype.name}}</option>
+            </select>
+            <div class="alert-danger" *ngIf="promotionType.errors && f.submitted">
+              <div *ngIf="promotionType.errors.required">Promotion Type is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="inline-radios">Status <small><code>*</code></small></label>
+          <div class="col-md-9 col-form-label">
+            <div class="form-check form-check-inline mr-1" id="inline-radios">
+              <input class="form-check-input" type="radio" name="inline-radios" id="inlineRadio1" [value]=true #status="ngModel" name="status" [(ngModel)]="promotionModel.status" required>
+              <label class="form-check-label" for="inlineRadio1">Enable</label>
+            </div>
+            <div class="form-check form-check-inline mr-1">
+              <input class="form-check-input" type="radio" name="inline-radios" id="inlineRadio2" [value]=false #status="ngModel" name="status" [(ngModel)]="promotionModel.status" required>
+              <label class="form-check-label" for="inlineRadio2">Disable</label>
+            </div>
+            <div class="alert-danger" *ngIf="status.errors && f.submitted">
+              <div *ngIf="status.errors.required">Status is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Company <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <select id="companyId" name="companyId" class="form-control" [(ngModel)]="promotionModel.companyId" #companyId="ngModel" required>
+              <option value="0">Please select</option>
+              <option *ngFor="let companyDetail of dropdownCompanyList" [ngValue]="companyDetail.id">{{companyDetail.companyName}}</option>
+            </select>
+            <div class="alert-danger" *ngIf="companyId.errors && f.submitted">
+              <div *ngIf="companyId.errors.required">Rank Detail is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Submit</button>
+            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Reset</button>
+            <button type="reset" class="btn btn-sm btn-secondary" (click)="back2List()"><i class="fa fa-backward"></i> Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

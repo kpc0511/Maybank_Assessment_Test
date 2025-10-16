@@ -1,0 +1,96 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Branch Listing
+        </div>
+        <div class="card-body">
+          <div class="alert alert-success" *ngIf="isDeleteSuccessful">
+            {{successDeleteMessage}}
+          </div>
+          <div class="alert alert-warning" *ngIf="isDeleteFailed">
+            Delete branch failed!<br />{{ errorDeleteMessage }}
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-12"><a routerLink="/branchManage/add-branch" class="btn btn-sm btn-success mb-2">Add Branch</a></div>
+            <div class="col-md-12">
+              <div class="input-group">
+                <input type="text" id="input1-group2" name="input1-group2" class="form-control" placeholder="Search by BranchName" [(ngModel)]="branchName" />
+                <span class="input-group-prepend">
+                    <button type="button" class="btn btn-primary" (click)="searchBranchName()"><i class="fa fa-search"></i> Search</button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <table class="table table-bordered table-striped table-sm">
+            <thead>
+              <tr>
+                <th class="align-top">Id</th>
+                <th class="align-top">Image</th>
+                <th class="align-top">Branch Name</th>
+                <th class="align-top">Address 1<br>Address 2<br>Address 3</th>
+                <th class="align-top">State<br>City<br>Postcode</th>
+                <th class="align-top">Total Table</th>
+                <th class="align-top">Total Promotion</th>
+                <th class="align-top">Total Gift</th>
+                <th class="align-top">Company</th>
+                <th class="align-top">Create Date<br>Update Date</th>
+                <th class="align-top">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let branchData of branches | paginate : {
+                    itemsPerPage: pageSize,
+                    currentPage: page,
+                    totalItems: count
+                  };
+                  let i = index"
+                  [class.active]="i == currentIndex"
+                  (click)="setActiveBranch(branchData, i)"
+              >
+                <td>{{ branchData.id }}</td>
+                <td><img [src]= "getImage(branchData.image)" alt="" height="80px" /></td>
+                <td>{{ branchData.branchName }}</td>
+                <td>{{ branchData.address1 }}<br>{{ branchData.address2 }}<br>{{ branchData.address3 }}</td>
+                <td>{{ branchData.state }}<br>{{ branchData.city }}<br>{{ branchData.postcode }}</td>
+                <td>{{ branchData.branchTableList.length}}</td>
+                <td>{{ branchData.promotionList.length}}</td>
+                <td>{{ branchData.giftsList.length}}</td>
+                <td>{{ branchData.company !== null ? branchData.company['companyName'] : "" }}</td>
+                <td>
+                  {{ (branchData.createDate !== null) ? (branchData.createDate | date: 'yyyy-MM-dd HH:mm:ss') : '-'}}<br>
+                  {{ (branchData.updateDate !== null) ? (branchData.updateDate | date: 'yyyy-MM-dd HH:mm:ss') : '-'}}
+                </td>
+                <td>
+                  <a routerLink="/branchManage/edit-branch/{{branchData.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
+                  <button (click)="deleteBranch(branchData.id)" class="btn btn-sm btn-danger btn-delete-user">
+                    <span>Delete</span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <pagination-controls class="page-item text-center"
+                               previousLabel="Prev"
+                               nextLabel="Next"
+                               [responsive]="true"
+                               (pageChange)="handlePageChange($event)"
+                               screenReaderPageLabel="page"
+                               screenReaderCurrentLabel="You're on page"
+          ></pagination-controls>
+          Items per Page:
+          <select (change)="handlePageSizeChange($event)">
+            <option *ngFor="let size of pageSizes" [ngValue]="size">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

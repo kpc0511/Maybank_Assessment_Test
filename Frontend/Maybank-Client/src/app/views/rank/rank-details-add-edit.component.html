@@ -1,0 +1,115 @@
+<div class="animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+      <strong *ngIf="isAddMode">Add Rank Detail</strong>
+      <strong *ngIf="!isAddMode">Edit Rank Detail</strong>
+      <small>Form</small>
+    </div>
+    <div class="card-body">
+      <form action="" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+        <div class="alert alert-success" *ngIf="f.submitted && isSuccessful">
+          {{successMessage}}
+        </div>
+        <div class="alert alert-warning" *ngIf="f.submitted && isFailed">
+          Add rank detail failed!<br />{{ errorMessage }}
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Image</label>
+          <div class="col-md-9">
+            <input id="rankDetailImage" name="rankDetailImage" type="file" fileLimit="1" accept="image/*" class="form-control-file"
+                   multiple="" placeholder="Please Select Image"
+                   (change)="selectFiles($event)">
+            <img *ngFor='let preview of previews' [src]="preview" class="preview">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Level Name <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Level Name" autocomplete="levelName"
+                   name="levelName" [(ngModel)]="rankDetailModel.levelName" minlength="3" maxlength="100" #levelName="ngModel" required>
+            <div class="alert-danger" *ngIf="levelName.errors && f.submitted">
+              <div *ngIf="levelName.errors.required">Level Name is required</div>
+              <div *ngIf="levelName.errors.minlength">Level Name must be at least 3 characters</div>
+              <div *ngIf="levelName.errors.maxlength">Level Name must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Level Title <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="text" class="form-control" placeholder="Please Enter Level Title" autocomplete="levelTitle"
+                   name="levelTitle" [(ngModel)]="rankDetailModel.levelTitle" minlength="3" maxlength="100" #levelTitle="ngModel" required>
+            <div class="alert-danger" *ngIf="levelTitle.errors && f.submitted">
+              <div *ngIf="levelTitle.errors.required">Level Title is required</div>
+              <div *ngIf="levelTitle.errors.minlength">Level Title must be at least 3 characters</div>
+              <div *ngIf="levelTitle.errors.maxlength">Level Title must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Min Value <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="number" class="form-control" placeholder="Please Enter Min Value" autocomplete="valueMin"
+                   name="valueMin" [(ngModel)]="rankDetailModel.valueMin" minlength="1" maxlength="100" #valueMin="ngModel" required>
+            <div class="alert-danger" *ngIf="valueMin.errors && f.submitted">
+              <div *ngIf="valueMin.errors.required">Min Values is required</div>
+              <div *ngIf="valueMin.errors.minlength">Min Values must be at least 1 characters</div>
+              <div *ngIf="valueMin.errors.maxlength">Min Values must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Max Value <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <input type="number" step="1" class="form-control" placeholder="Please Enter Max Value" autocomplete="valueMax"
+                   name="valueMax" [(ngModel)]="rankDetailModel.valueMax" minlength="1" maxlength="100" #valueMax="ngModel" required>
+            <div class="alert-danger" *ngIf="valueMax.errors && f.submitted">
+              <div *ngIf="valueMax.errors.required">Max Value is required</div>
+              <div *ngIf="valueMax.errors.minlength">Max Value must be at least 1 characters</div>
+              <div *ngIf="valueMax.errors.maxlength">Max Value must be at most 100 characters</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Rank <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <select id="rankTypeId" name="rankTypeId" class="form-control" [(ngModel)]="rankDetailModel.rankTypeId" #rankTypeId="ngModel" required>
+              <option value="0">Please select</option>
+              <option *ngFor="let rank of dropdownRankTypeList" [ngValue]="rank.id">{{rank.rankingName}}</option>
+            </select>
+            <div class="alert-danger" *ngIf="rankTypeId.errors && f.submitted">
+              <div *ngIf="rankTypeId.errors.required">Rank is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label">Company <small><code>*</code></small></label>
+          <div class="col-md-9">
+            <select id="companyId" name="companyId" class="form-control" [(ngModel)]="rankDetailModel.companyId" #companyId="ngModel" required>
+              <option value="0">Please select</option>
+              <option *ngFor="let companyDetail of dropdownCompanyList" [ngValue]="companyDetail.id">{{companyDetail.companyName}}</option>
+            </select>
+            <div class="alert-danger" *ngIf="companyId.errors && f.submitted">
+              <div *ngIf="companyId.errors.required">Rank Detail is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Submit</button>
+            <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Reset</button>
+            <button type="reset" class="btn btn-sm btn-secondary" (click)="back2List()"><i class="fa fa-backward"></i> Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

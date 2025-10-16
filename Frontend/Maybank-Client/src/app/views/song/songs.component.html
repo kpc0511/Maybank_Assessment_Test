@@ -1,0 +1,91 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Song Listing
+        </div>
+        <div class="card-body">
+          <div class="alert alert-success" *ngIf="isDeleteSuccessful">
+            {{successDeleteMessage}}
+          </div>
+          <div class="alert alert-warning" *ngIf="isDeleteFailed">
+            Delete song credit failed!<br />{{ errorDeleteMessage }}
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-12"><a routerLink="/song/add-song" class="btn btn-sm btn-success mb-2">Add Song Credit</a></div>
+            <div class="col-md-12">
+              <div class="input-group">
+                <input type="text" id="input1-group2" name="input1-group2" class="form-control" placeholder="Search by Song Name" [(ngModel)]="songName" />
+                <span class="input-group-prepend">
+                    <button type="button" class="btn btn-primary" (click)="searchSongName()"><i class="fa fa-search"></i> Search</button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <table class="table table-bordered table-striped table-sm">
+            <thead>
+              <tr>
+                <th class="align-top">Id</th>
+                <th class="align-top">Song Title</th>
+                <th class="align-top">Song Name</th>
+                <th class="align-top">Song Duration</th>
+                <th class="align-top">Singer</th>
+                <th class="align-top">Company</th>
+                <th class="align-top">Create Date<br>Update Date</th>
+                <th class="align-top">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="
+                  let songData of songs | paginate : {
+                    itemsPerPage: pageSize,
+                    currentPage: page,
+                    totalItems: count
+                  };
+                  let i = index"
+                  [class.active]="i == currentIndex"
+                  (click)="setActiveSong(songData, i)"
+              >
+                <td>{{ songData.id }}</td>
+                <td>{{ songData.songTitle }}</td>
+                <td>{{ songData.songName }}</td>
+                <td>{{ songData.songDuration }}</td>
+                <td>{{ songData.singerId }}</td>
+                <td>{{ songData.company !== null ? songData.company['companyName'] : "" }}</td>
+                <td>
+                  {{ (songData.createDate !== null) ? (songData.createDate | date: 'yyyy-MM-dd HH:mm:ss') : '-'}}<br>
+                  {{ (songData.updateDate !== null) ? (songData.updateDate | date: 'yyyy-MM-dd HH:mm:ss') : '-'}}
+                </td>
+                <td>
+                  <a routerLink="/credit/edit-song/{{songData.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
+                  <button (click)="deleteSong(songData.id)" class="btn btn-sm btn-danger btn-delete-user">
+                    <span>Delete</span>
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="songs.length === 0"><td colspan="8">No records found</td></tr>
+            </tbody>
+          </table>
+          <pagination-controls class="page-item text-center"
+                               previousLabel="Prev"
+                               nextLabel="Next"
+                               [responsive]="true"
+                               (pageChange)="handlePageChange($event)"
+                               screenReaderPageLabel="page"
+                               screenReaderCurrentLabel="You're on page"
+          ></pagination-controls>
+          Items per Page:
+          <select (change)="handlePageSizeChange($event)">
+            <option *ngFor="let size of pageSizes" [ngValue]="size">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>
